@@ -1,0 +1,17 @@
+{
+  "name": "Place Name",
+  "region": "Region · Detail",
+  "tagline": "One line description",
+  "subtitle": "& poetic subtitle",
+  "coords": "00°00'00\"N  00°00'00\"E",
+  "storyTitle": "Your opening line — the hook.",
+  "story": [
+    "First paragraph of your story. Keep it poetic, personal, present tense works well.",
+    "Second paragraph. What did this place make you feel? What did you almost miss?"
+  ],
+  "camera": "Fujifilm X-M5 · Classic Chrome",
+  "season": "Spring 2026",
+  "theme": "Landscape / Urban / Coastal / History",
+  "instagramUrl": "https://www.instagram.com/p/YOURPOSTID/",
+  "order": 1
+}

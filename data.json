@@ -1,0 +1,102 @@
+{
+  "lastUpdated": "May 17, 2026",
+  "totalPlaces": 5,
+  "totalPhotos": 0,
+  "places": [
+    {
+      "name": "Zugspitze",
+      "region": "Bavaria · 2,962m",
+      "tagline": "Germany's highest peak",
+      "subtitle": "& the edge of light",
+      "coords": "47°25'16\"N  10°59'07\"E",
+      "storyTitle": "As one world sets, the other arises.",
+      "story": [
+        "There is a moment at the peak's edge when the light stops being light and becomes something else entirely — a silence you can almost hold. I stood there until the valley fell into shadow and the mountain stayed lit.",
+        "The day-to-night transition here isn't gradual. It arrives like a decision. One frame was enough to understand that some places don't need you to stay long. They need you to arrive at the right second."
+      ],
+      "camera": "Fujifilm X · Classic Chrome",
+      "season": "Winter 2026",
+      "theme": "Landscape",
+      "instagramUrl": "https://www.instagram.com/p/DXO9s41iPjS/",
+      "order": 1,
+      "heroPhoto": null,
+      "photos": []
+    },
+    {
+      "name": "Tangermünde",
+      "region": "Saxony-Anhalt · Elbe",
+      "tagline": "Where 100,000 ghosts once crossed",
+      "subtitle": "& the weight of silence",
+      "coords": "52°32'35\"N  11°58'00\"E",
+      "storyTitle": "Where the bridge broke, the past arises.",
+      "story": [
+        "Standing at the edge of Tangermünde, where 100,000 ghosts once crossed into the reach of the west. The bridge is gone. The silence carries the weight. The shadows carry the secret.",
+        "This is the kind of place where history doesn't announce itself. It waits in the texture of walls, in the way the light falls differently here than anywhere else on the Elbe."
+      ],
+      "camera": "Fujifilm XM5 · Sigma 56mm",
+      "season": "Spring 2026",
+      "theme": "WW2 history",
+      "instagramUrl": "https://www.instagram.com/p/DXhHPtliAZ6/",
+      "order": 2,
+      "heroPhoto": null,
+      "photos": []
+    },
+    {
+      "name": "Schwerin",
+      "region": "Mecklenburg · Lakes",
+      "tagline": "The fairy tale city",
+      "subtitle": "& the rules it never followed",
+      "coords": "53°37'45\"N  11°24'43\"E",
+      "storyTitle": "A fairy tale city that never got the memo to grow up.",
+      "story": [
+        "Castles on lakes. Vintage iron on cobblestones. Cherry blossoms in the frame of an old window. Schwerin plays by its own rules — and the light agrees.",
+        "Three posts came from this city. Each time I looked through something to see it: a window, a door, a pane of glass. The frame is never the end. It's always the beginning."
+      ],
+      "camera": "Fujifilm X · Classic Chrome",
+      "season": "Spring 2026",
+      "theme": "Urban / Nature",
+      "instagramUrl": "https://www.instagram.com/vascodevignette/",
+      "order": 3,
+      "heroPhoto": null,
+      "photos": []
+    },
+    {
+      "name": "Stralsund",
+      "region": "Pomerania · Baltic",
+      "tagline": "Five seconds of perfect blue",
+      "subtitle": "& the bird that waited",
+      "coords": "54°18'36\"N  13°05'25\"E",
+      "storyTitle": "I almost walked past this.",
+      "story": [
+        "A streetlight, a bird, and five seconds of perfect blue. Stralsund gave me this for free. That's the thing about this city — it doesn't hide its beauty. It just waits for you to stop.",
+        "Shot on the Fujifilm X-M5 with the Sigma 56mm. The combination renders blue the way it actually feels: deep, total, unhurried."
+      ],
+      "camera": "Fujifilm X-M5 · Sigma 56mm f/1.4",
+      "season": "Spring 2026",
+      "theme": "Cinematic",
+      "instagramUrl": "https://www.instagram.com/p/DYMl-5wiKfn/",
+      "order": 4,
+      "heroPhoto": null,
+      "photos": []
+    },
+    {
+      "name": "Rügen",
+      "region": "Island · Baltic Sea",
+      "tagline": "The island that doesn't perform",
+      "subtitle": "& the impossible blue",
+      "coords": "54°26'00\"N  13°25'00\"E",
+      "storyTitle": "Rügen doesn't perform for you.",
+      "story": [
+        "It just opens — through branches, between trees, across piers where the birds have already claimed the best spots. You find the frame, or you miss it entirely.",
+        "The Baltic was the same shade of impossible all day. The sailboats didn't care. Neither did the leaves. Seven frames from the coast. One recurring answer."
+      ],
+      "camera": "Fujifilm X · Classic Chrome",
+      "season": "Spring 2026",
+      "theme": "Coastal / Nature",
+      "instagramUrl": "https://www.instagram.com/vascodevignette/",
+      "order": 5,
+      "heroPhoto": null,
+      "photos": []
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vasco De Vignette — Places & Stories</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --paper: #f5f0e8;
+    --warm: #c9a96e;
+    --muted: #8a8070;
+    --faint: #e8e0d0;
+    --dark: #0d0b09;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Cormorant Garamond', serif; cursor: none; }
+
+  .cursor { position: fixed; width: 8px; height: 8px; background: var(--warm); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+  .cursor-ring { position: fixed; width: 32px; height: 32px; border: 1px solid var(--warm); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.15s ease; opacity: 0.5; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 60px; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s; }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; letter-spacing: 2px; color: #f5f0e8; text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--warm); }
+
+  .hero { height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px; position: relative; background: var(--dark); overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 50%, #2a1f0e 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, #0d1a2a 0%, transparent 50%), var(--dark); }
+  .hero-label { font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 4px; color: var(--warm); text-transform: uppercase; margin-bottom: 24px; opacity: 0; animation: fadeUp 1s 0.3s forwards; position: relative; }
+  .hero-title { font-size: clamp(52px, 8vw, 110px); font-weight: 300; color: #f5f0e8; line-height: 0.95; letter-spacing: -2px; opacity: 0; animation: fadeUp 1s 0.6s forwards; position: relative; }
+  .hero-title em { font-style: italic; color: var(--warm); }
+  .hero-sub { font-family: 'Courier Prime', monospace; font-size: 12px; color: var(--muted); letter-spacing: 2px; margin-top: 32px; opacity: 0; animation: fadeUp 1s 0.9s forwards; position: relative; }
+  .hero-scroll { position: absolute; right: 60px; bottom: 60px; display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fadeUp 1s 1.2s forwards; }
+  .hero-scroll span { font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: 3px; color: var(--muted); writing-mode: vertical-rl; text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 60px; background: linear-gradient(to bottom, var(--warm), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+
+  .places-index { padding: 80px 60px; background: var(--paper); border-bottom: 1px solid var(--faint); }
+  .section-label { font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: 4px; color: var(--warm); text-transform: uppercase; margin-bottom: 40px; }
+  #index-grid { display: flex; flex-wrap: wrap; gap: 2px; }
+  .index-item { padding: 28px 20px; border: 1px solid var(--faint); cursor: pointer; transition: all 0.3s; text-decoration: none; display: block; position: relative; overflow: hidden; flex: 1; min-width: 160px; }
+  .index-item::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--warm); transform: scaleX(0); transition: transform 0.3s; }
+  .index-item:hover::before { transform: scaleX(1); }
+  .index-item:hover { background: var(--faint); }
+  .index-num { font-family: 'Courier Prime', monospace; font-size: 10px; color: var(--warm); letter-spacing: 2px; display: block; margin-bottom: 12px; }
+  .index-name { font-size: 22px; font-weight: 300; color: var(--ink); display: block; line-height: 1.2; }
+  .index-region { font-family: 'Courier Prime', monospace; font-size: 10px; color: var(--muted); display: block; margin-top: 8px; letter-spacing: 1px; }
+
+  .place { min-height: 100vh; }
+  .place-hero { height: 65vh; position: relative; overflow: hidden; display: flex; align-items: flex-end; background: var(--dark); }
+  .place-hero-bg-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 240px; font-weight: 300; font-family: 'Cormorant Garamond', serif; color: rgba(255,255,255,0.04); letter-spacing: -20px; user-select: none; line-height: 1; }
+  .place-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.45; }
+  .place-hero-content { position: relative; z-index: 2; padding: 60px; width: 100%; }
+  .place-tag { font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: 4px; color: var(--warm); text-transform: uppercase; display: block; margin-bottom: 16px; }
+  .place-name { font-size: clamp(42px, 6vw, 88px); font-weight: 300; color: #f5f0e8; line-height: 0.95; letter-spacing: -2px; }
+  .place-name em { font-style: italic; opacity: 0.6; }
+  .place-coords { font-family: 'Courier Prime', monospace; font-size: 11px; color: var(--muted); margin-top: 16px; letter-spacing: 2px; }
+
+  .place-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .place-story { padding: 72px 60px; background: var(--paper); display: flex; flex-direction: column; justify-content: center; }
+  .story-number { font-family: 'Courier Prime', monospace; font-size: 64px; color: var(--faint); line-height: 1; margin-bottom: -10px; }
+  .story-title { font-size: 28px; font-weight: 300; font-style: italic; color: var(--ink); margin-bottom: 20px; line-height: 1.3; }
+  .story-text { font-size: 17px; font-weight: 300; line-height: 1.85; color: #3a3530; max-width: 460px; }
+  .story-text + .story-text { margin-top: 14px; }
+  .story-detail { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--faint); display: flex; gap: 36px; flex-wrap: wrap; }
+  .detail-item { display: flex; flex-direction: column; gap: 4px; }
+  .detail-label { font-family: 'Courier Prime', monospace; font-size: 9px; letter-spacing: 3px; color: var(--warm); text-transform: uppercase; }
+  .detail-value { font-size: 14px; font-weight: 300; color: var(--ink); }
+
+  .photo-gallery { background: #111; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+  .gallery-img { aspect-ratio: 4/3; overflow: hidden; position: relative; background: #1a1a1a; cursor: pointer; }
+  .gallery-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease, opacity 0.3s; opacity: 0.85; }
+  .gallery-img:hover img { transform: scale(1.04); opacity: 1; }
+  .gallery-img-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); font-family: 'Courier Prime', monospace; font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; }
+  .gallery-img:hover .gallery-img-caption { opacity: 1; }
+  .gallery-placeholder { aspect-ratio: 4/3; background: linear-gradient(135deg, #1a1a2a, #2a1a1a); display: flex; align-items: center; justify-content: center; }
+  .gallery-placeholder span { font-family: 'Courier Prime', monospace; font-size: 10px; color: #333; letter-spacing: 2px; }
+
+  .place-ig-link { padding: 20px 60px; background: var(--faint); display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #ddd8cc; }
+  .ig-text { font-family: 'Courier Prime', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; }
+  .ig-link { font-family: 'Courier Prime', monospace; font-size: 11px; color: var(--warm); letter-spacing: 2px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: gap 0.3s; }
+  .ig-link:hover { gap: 14px; }
+  .place-divider { height: 2px; background: linear-gradient(to right, transparent, var(--warm), transparent); opacity: 0.25; }
+
+  /* Lightbox */
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+  .lightbox-close { position: absolute; top: 24px; right: 32px; color: white; font-size: 32px; cursor: pointer; font-family: 'Courier Prime', monospace; opacity: 0.6; transition: opacity 0.2s; }
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-caption { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); font-family: 'Courier Prime', monospace; font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 2px; }
+
+  footer { background: var(--dark); padding: 80px 60px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .footer-left h2 { font-size: 44px; font-weight: 300; color: #f5f0e8; font-style: italic; line-height: 1.1; margin-bottom: 16px; }
+  .footer-left p { font-family: 'Courier Prime', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; }
+  .footer-right { text-align: right; }
+  .footer-ig { font-size: 20px; font-weight: 300; color: var(--warm); text-decoration: none; display: block; margin-bottom: 8px; }
+  .footer-copy { font-family: 'Courier Prime', monospace; font-size: 10px; color: #3a3530; letter-spacing: 2px; }
+  .last-updated { font-family: 'Courier Prime', monospace; font-size: 10px; color: #2a2520; letter-spacing: 2px; margin-top: 8px; }
+
+  .loading { text-align: center; padding: 120px 60px; font-family: 'Courier Prime', monospace; font-size: 12px; color: var(--muted); letter-spacing: 4px; }
+  .error-msg { text-align: center; padding: 60px; font-family: 'Courier Prime', monospace; font-size: 12px; color: #c96e6e; letter-spacing: 2px; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero, .place-hero-content, .place-story, .place-ig-link, .places-index, footer { padding-left: 24px; padding-right: 24px; }
+    .place-body { grid-template-columns: 1fr; }
+    .photo-gallery { grid-template-columns: repeat(2, 1fr); }
+    footer { flex-direction: column; gap: 32px; align-items: flex-start; }
+    .footer-right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">×</span>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">VdV</a>
+  <ul class="nav-links" id="navLinks"></ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-label">@vascodevignette · A visual journey</p>
+  <h1 class="hero-title">Every place<br>has <em>a story.</em></h1>
+  <p class="hero-sub" id="heroSub">Loading places...</p>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<section class="places-index">
+  <p class="section-label">— Places visited</p>
+  <div id="index-grid"><div class="loading">Loading places...</div></div>
+</section>
+
+<div id="places-container"></div>
+
+<footer>
+  <div class="footer-left">
+    <h2>Still roaming.<br>Still looking.</h2>
+    <p>@vascodevignette · Germany</p>
+  </div>
+  <div class="footer-right">
+    <a href="https://www.instagram.com/vascodevignette/" target="_blank" class="footer-ig">@vascodevignette</a>
+    <p class="footer-copy">Photography by Vasco De Vignette</p>
+    <p class="last-updated" id="lastUpdated"></p>
+  </div>
+</footer>
+
+<script>
+  // ── Cursor ──────────────────────────────────────────────
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  (function animRing() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  // ── Nav scroll ──────────────────────────────────────────
+  const nav = document.getElementById('nav');
+  const navLogo = nav.querySelector('.nav-logo');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > window.innerHeight * 0.8) {
+      nav.style.background = 'rgba(245,240,232,0.96)';
+      nav.style.backdropFilter = 'blur(8px)';
+      navLogo.style.color = '#1a1714';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+      navLogo.style.color = '#f5f0e8';
+    }
+  });
+
+  // ── Lightbox ────────────────────────────────────────────
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  document.getElementById('lightboxClose').onclick = () => lightbox.classList.remove('open');
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+  function openLightbox(src, caption) {
+    lightboxImg.src = src;
+    lightboxCaption.textContent = caption || '';
+    lightbox.classList.add('open');
+  }
+
+  // ── Scroll reveal ───────────────────────────────────────
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+
+  // ── Build site from data.json ───────────────────────────
+  fetch('data.json')
+    .then(r => r.json())
+    .then(data => buildSite(data))
+    .catch(err => {
+      document.getElementById('index-grid').innerHTML = '<div class="error-msg">Could not load portfolio data. Please check data.json.</div>';
+      console.error(err);
+    });
+
+  function buildSite(data) {
+    const places = data.places || [];
+
+    // Hero subtitle
+    document.getElementById('heroSub').textContent =
+      `${places.length} place${places.length !== 1 ? 's' : ''} · ${places.reduce((s,p) => s + (p.photos||[]).length, 0)} frames · Germany, 2025–2026`;
+
+    // Last updated
+    if (data.lastUpdated) {
+      document.getElementById('lastUpdated').textContent = 'Last updated · ' + data.lastUpdated;
+    }
+
+    // Nav links
+    const navLinks = document.getElementById('navLinks');
+    navLinks.innerHTML = places.map(p =>
+      `<li><a href="#place-${slug(p.name)}">${p.name}</a></li>`
+    ).join('');
+
+    // Index grid
+    const indexGrid = document.getElementById('index-grid');
+    indexGrid.innerHTML = places.map((p, i) => `
+      <a href="#place-${slug(p.name)}" class="index-item">
+        <span class="index-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="index-name">${p.name}</span>
+        <span class="index-region">${p.region || ''}</span>
+      </a>
+    `).join('');
+
+    // Place sections
+    const container = document.getElementById('places-container');
+    container.innerHTML = places.map((p, i) => buildPlace(p, i)).join('<div class="place-divider"></div>');
+
+    // Attach lightbox listeners
+    container.querySelectorAll('.gallery-img').forEach(el => {
+      el.addEventListener('click', () => {
+        openLightbox(el.dataset.src, el.dataset.caption);
+      });
+    });
+
+    // Reveal observer
+    container.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  }
+
+  function buildPlace(p, i) {
+    const id = slug(p.name);
+    const num = String(i+1).padStart(2,'0');
+    const heroImgStyle = p.heroPhoto
+      ? `style="background-image: url('${p.heroPhoto}')"` : '';
+
+    const photos = (p.photos || []).slice(0, 9);
+    const galleryHTML = photos.length > 0
+      ? photos.map(ph => `
+          <div class="gallery-img" data-src="${ph.url}" data-caption="${ph.caption || p.name}">
+            <img src="${ph.url}" alt="${ph.caption || p.name}" loading="lazy">
+            <div class="gallery-img-caption">${ph.caption || ''}</div>
+          </div>`).join('')
+      : `<div class="gallery-placeholder"><span>Photos coming soon</span></div>`.repeat(3);
+
+    const storyRight = i % 2 === 0;
+
+    const storyHTML = `
+      <div class="place-story reveal">
+        <div class="story-number">${num}</div>
+        <h3 class="story-title">${p.storyTitle || p.name}</h3>
+        ${(p.story || ['No story yet.']).map(t => `<p class="story-text">${t}</p>`).join('')}
+        <div class="story-detail">
+          ${p.camera ? `<div class="detail-item"><span class="detail-label">Shot on</span><span class="detail-value">${p.camera}</span></div>` : ''}
+          ${p.season ? `<div class="detail-item"><span class="detail-label">Season</span><span class="detail-value">${p.season}</span></div>` : ''}
+          ${p.theme ? `<div class="detail-item"><span class="detail-label">Theme</span><span class="detail-value">${p.theme}</span></div>` : ''}
+        </div>
+      </div>`;
+
+    const gallerySection = `<div class="photo-gallery">${galleryHTML}</div>`;
+
+    return `
+      <section class="place" id="place-${id}">
+        <div class="place-hero">
+          <div class="place-hero-bg-text">${p.name.substring(0,3).toUpperCase()}</div>
+          ${p.heroPhoto ? `<div class="place-hero-img" ${heroImgStyle}></div>` : ''}
+          <div class="place-hero-content">
+            <span class="place-tag">${num} / ${p.tagline || p.region || ''}</span>
+            <h2 class="place-name">${p.name}<br><em>${p.subtitle || ''}</em></h2>
+            <p class="place-coords">${p.coords || ''}</p>
+          </div>
+        </div>
+        <div class="place-body">
+          ${storyRight ? gallerySection + storyHTML : storyHTML + gallerySection}
+        </div>
+        ${p.instagramUrl ? `
+        <div class="place-ig-link">
+          <span class="ig-text">View on Instagram</span>
+          <a href="${p.instagramUrl}" target="_blank" class="ig-link">@vascodevignette →</a>
+        </div>` : ''}
+      </section>`;
+  }
+
+  function slug(str) {
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+</script>
+</body>
+</html>

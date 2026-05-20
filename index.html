@@ -55,7 +55,7 @@
   .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--warm), transparent); animation: scrollPulse 2s ease-in-out infinite; }
 
   /* INDEX */
-  .places-index { padding: 40px 20px; background: var(--paper); border-bottom: 1px solid var(--faint); }
+  .-index { padding: 40px 20px; background: var(--paper); border-bottom: 1px solid var(--faint); }
   .section-label { font-family: 'Courier Prime', monospace; font-size: 9px; letter-spacing: 4px; color: var(--warm); text-transform: uppercase; margin-bottom: 20px; }
   #index-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
   .index-item { padding: 18px 14px; border: 1px solid var(--faint); text-decoration: none; display: block; -webkit-tap-highlight-color: transparent; transition: background 0.2s; }
@@ -138,7 +138,7 @@
     .hero-scroll span { font-size: 10px; }
     .scroll-line { height: 60px; }
 
-    .places-index { padding: 80px 60px; }
+    .-index { padding: 80px 60px; }
     .section-label { font-size: 10px; margin-bottom: 40px; }
     #index-grid { display: flex; flex-wrap: wrap; }
     .index-item { flex: 1; min-width: 160px; padding: 28px 20px; position: relative; overflow: hidden; }
@@ -202,7 +202,7 @@
   </a>
   <div class="nav-dropdown-wrap">
     <button class="nav-dropdown-btn" id="navDropdownBtn">
-      Places <span id="navDropdownCount"></span> <span class="arrow">▾</span>
+       <span id="navDropdownCount"></span> <span class="arrow">▾</span>
     </button>
     <ul class="nav-dropdown-menu" id="navLinks"></ul>
   </div>
@@ -213,7 +213,7 @@
   <div class="hero-content">
     <p class="hero-label">@vascodevignette · A visual journey</p>
     <h1 class="hero-title">Every place<br>has <em>a story.</em></h1>
-    <p class="hero-sub" id="heroSub">Loading places...</p>
+    <p class="hero-sub" id="heroSub">Loading ...</p>
   </div>
   <div class="hero-scroll">
     <div class="scroll-line"></div>
@@ -221,12 +221,12 @@
   </div>
 </section>
 
-<section class="places-index">
-  <p class="section-label">— Places visited</p>
+<section class="-index">
+  <p class="section-label">—  visited</p>
   <div id="index-grid"><div class="loading">Loading...</div></div>
 </section>
 
-<div id="places-container"></div>
+<div id="-container"></div>
 
 <footer>
   <div class="footer-left">
@@ -277,7 +277,7 @@
   });
 
   function buildSite(data) {
-    const places = data.places || [];
+    const places = (data.places || []).slice().reverse();
     const totalPhotos = places.reduce((s,p) => s+(p.photos||[]).length, 0);
 
     document.getElementById('heroSub').textContent =
